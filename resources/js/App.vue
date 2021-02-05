@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
     <nav-bar></nav-bar>
-    <router-view></router-view>
+    <router-view class="max-w-screen-xl md:mx-auto px-2 md:px-0"></router-view>
     <Footer/>
   </div>
 </template>

@@ -1,42 +1,43 @@
 <template>
-    <div class="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 p-3">
-        <div class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
-            <div class="flex flex-row items-center justify-between p-4">
+    <div class="w-full text-gray-700 bg-white border-b-2 border-gray-300 border-opacity-50">
+        <div class="flex flex-col max-w-screen-xl mx-auto md:items-center md:justify-between md:flex-row">
+            <div class="flex flex-row items-center justify-between px-2 py-4">
                 <logo/>
                 <button class="rounded-lg md:hidden focus:outline-none focus:shadow-outline" @click="open = !open">
                     <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
-                        <path x-show="!open" fill-rule="evenodd"
+                        <path v-if="!open" fill-rule="evenodd"
                             d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
                             clip-rule="evenodd"></path>
-                        <path x-show="open" fill-rule="evenodd"
+                        <path v-if="open" fill-rule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
             </div>
             <nav
-                class="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
-                <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent md:mt-0 md:ml-4 hover:text-white focus:text-gray-900 hover:bg-purple-600 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                :class="open ? '' : 'hidden'"
+                class="flex flex-col flex-grow pb-4 md:pb-0 md:justify-end md:flex-row">
+                <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">GCSE</a>
-                <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent md:mt-0 md:ml-4 hover:text-white focus:text-gray-900 hover:bg-purple-600 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">IGCSE</a>
-                <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent md:mt-0 md:ml-4 hover:text-white focus:text-gray-900 hover:bg-purple-600 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">AS</a>
-                <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent md:mt-0 md:ml-4 hover:text-white focus:text-gray-900 hover:bg-purple-600 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">A Level</a>
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open"
-                        class="flex flex-row text-purple-600 bg-transparent items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 border border-purple-600 focus:outline-white">
+                    <button @click="open2 = !open2"
+                        class="flex flex-row text-purple-600 bg-transparent items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 md:border md:border-purple-600">
                         <span>More</span>
                         <svg fill="currentColor" viewBox="0 0 20 20"
-                            :class="{'rotate-180': open, 'rotate-0': !open}"
+                            :class="{'rotate-180': open2, 'rotate-0': !open2}"
                             class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1">
                             <path fill-rule="evenodd"
                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                 clip-rule="evenodd"></path>
                         </svg>
                     </button>
-                    <div v-if="open" class="absolute right-0 w-full md:max-w-screen-sm md:w-screen mt-2 origin-top-right">
+                    <div v-if="open2" class="absolute right-0 w-full md:max-w-screen-sm md:w-screen mt-2 origin-top-right">
                         <div class="px-2 pt-2 pb-4 bg-white rounded-md shadow-lg dark-mode:bg-gray-700">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <a class="flex row items-start rounded-lg bg-transparent p-2 hover:text-white focus:text-gray-900 hover:bg-purple-600 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
@@ -96,7 +97,7 @@
                 <div class="flex flex-col md:flex-row">
                     <router-link class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent text-purple-600 md:mt-0 md:ml-4 hover:text-gray-900"
                         to="/login">Login</router-link>
-                    <router-link class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent rounded border hover:border-purple-600"
+                    <router-link class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent md:rounded border hover:border-purple-600"
                         to="/signup">Join Now</router-link>
                 </div>
             </nav>
@@ -110,7 +111,8 @@ export default {
     components:{Logo},
     data(){
         return{
-            open: false
+            open: false,
+            open2: false
         }
     }
 }
