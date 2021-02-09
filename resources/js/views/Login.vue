@@ -5,7 +5,7 @@
                 <h2 class="text-center text-4xl text-purple-600 font-display font-semibold lg:text-left xl:text-5xl
                 xl:text-bold">Log in</h2>
                 <div class="mt-12">
-                    <Form @submit="onSubmit" v-slot="{ errors }">
+                    <Form ref="form" @submit="onSubmit" v-slot="{ errors }">
                         <!-- <Field name="field" :rules="isRequired" /> -->
                         
                         <div>
@@ -21,7 +21,7 @@
                                 v-model="email"
                                 placeholder="mike@gmail.com"/>
                             
-                            <span class="text-xs text-red-600">{{ errors.email }}</span>
+                            <span class="text-xs text-red-600" v-html="Array.isArray(errors.email) ? errors.email.join('<br> ') : errors.email"></span>
                         </div>
                         <div class="mt-8">
                             <div class="flex justify-between items-center">
@@ -130,7 +130,18 @@ export default {
       return value ? true : 'Email is required';
     },
     onSubmit() {
-      alert('Submitting :(');
+    //   alert('Submitting :(');
+    this.$http.post('/login',{
+        email: this.email,
+        password: this.password 
+    })
+    .then(res => {
+        console.log(res.data)
+    })
+    .catch(err => {
+        // console.log()
+        this.$refs.form.setErrors(err.response.data.errors)
+    })
     },
     validateEmail(value) {
       // if the field is empty
