@@ -1,34 +1,33 @@
 <template>
     <div class="lg:flex">
         <div class="lg:w-1/2 xl:max-w-screen-sm p-3">
-            <div class="py-12 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
-                <div class="cursor-pointer flex items-center">
-                    <div>
-                        <svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
-                            <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-                            <g>
-                            <path id="Layer0_0_1_STROKES" style="fill:none;stroke:currentColor;stroke-width:20;stroke-linecap:round;stroke-miterlimit:3;" d="M173.8,151.5l13.6-13.6 M35.4,89.9l29.1-29 M89.4,34.9v1 M137.4,187.9l-0.6-0.4     M36.6,138.7l0.2-0.2 M56.1,169.1l27.7-27.6 M63.8,111.5l74.3-74.4 M87.1,188.1L187.6,87.6 M110.8,114.5l57.8-57.8"/>
-                            </g>
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">blockify</div>
-                </div>
-            </div>
-            <div class="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
-                <h2 class="text-center text-4xl text-indigo-900 font-display font-semibold lg:text-left xl:text-5xl
+            <div class="mt-10 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
+                <h2 class="text-center text-4xl text-purple-600 font-display font-semibold lg:text-left xl:text-5xl
                 xl:text-bold">Log in</h2>
                 <div class="mt-12">
-                    <form>
+                    <Form @submit="onSubmit" v-slot="{ errors }">
+                        <!-- <Field name="field" :rules="isRequired" /> -->
+                        
                         <div>
-                            <div class="text-sm font-bold text-gray-700 tracking-wide">Email Address</div>
-                            <input class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="mike@gmail.com">
+                            <label :class="!errors.email ?'text-gray-700':'text-red-600'" class="text-sm font-bold tracking-wide">Email Address</label>
+
+                            <Field 
+                                class="w-full text-lg py-2 border-b focus:outline-none " 
+                                :class="!errors.email ? 'border-gray-300 focus:border-indigo-500' : 'border-red-600 focus:border-red-600'"
+                                name="email" 
+                                :rules="validateEmail"
+                                :validateOnInput="true"
+                                autocomplete="off"
+                                v-model="email"
+                                placeholder="mike@gmail.com"/>
+                            
+                            <span class="text-xs text-red-600">{{ errors.email }}</span>
                         </div>
                         <div class="mt-8">
                             <div class="flex justify-between items-center">
-                                <div class="text-sm font-bold text-gray-700 tracking-wide">
+                                <label :class="!errors.password ?'text-gray-700':'text-red-600'" class="text-sm font-bold tracking-wide">
                                     Password
-                                </div>
+                                </label>
                                 <div>
                                     <a class="text-xs font-display font-semibold text-indigo-600 hover:text-indigo-800
                                     cursor-pointer">
@@ -36,18 +35,39 @@
                                     </a>
                                 </div>
                             </div>
-                            <input class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="Enter your password">
+                            <div class="relative flex items-center">
+
+                                <Field 
+                                    class="w-full text-lg py-2 border-b focus:outline-none " 
+                                    :class="!errors.password ? 'border-gray-300 focus:border-indigo-500' : 'border-red-600 focus:border-red-600'"
+                                    name="password"
+                                    :type="show ? 'text': 'password'"
+                                    :rules="validatePassword"
+                                    :validateOnInput="true"
+                                    autocomplete="new-password"
+                                    v-model="password"
+                                    placeholder="Password"/>
+                                
+                                <svg v-if="show" @click="show = !show" class="w-6 cursor-pointer absolute right-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg v-else @click="show = !show" class="w-6 cursor-pointer absolute right-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                </svg>
+                            </div>
+                            <span class="text-xs text-red-600">{{ errors.password }}</span>
                         </div>
+                        
                         <div class="mt-10">
-                            <button class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
-                            font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                            shadow-lg">
-                                Log In
+                            <button type="submit" class="bg-purple-600 text-gray-100 p-4 w-full rounded-full tracking-wide
+                            font-semibold font-display focus:outline-none focus:shadow-outline shadow-lg">
+                                Login
                             </button>
                         </div>
                     </form>
                     <div class="mt-12 text-sm font-display font-semibold text-gray-700 text-center">
-                        Don't have an account ? <a class="cursor-pointer text-indigo-600 hover:text-indigo-800">Sign up</a>
+                        Don't have an account ? <router-link to="/signup" class="cursor-pointer text-indigo-600 hover:text-indigo-800">Sign up</router-link>
                     </div>
                 </div>
             </div>
@@ -55,7 +75,6 @@
         <div class="hidden lg:flex items-center justify-center bg-indigo-100 flex-1">
             <div class="max-w-xs transform duration-200 hover:scale-110 cursor-pointer">
                 <svg class="w-5/6 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 528.71721 699.76785">
-                    <title>Login</title>
                     <rect y="17.06342" width="444" height="657" fill="#535461"/>
                     <polygon points="323 691.063 0 674.063 0 17.063 323 0.063 323 691.063" fill="#7f9cf5"/>
                     <circle cx="296" cy="377.06342" r="4" fill="#535461"/>
@@ -92,11 +111,63 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate';
 export default {
-
+    components: {
+    Field,
+    Form,
+  },
+  data(){
+      return{
+          email: 'ahsan@ahsan-web.ml',
+          password: 'ahsan1997',
+          show: false
+      }
+  },
+  methods: {
+    // Validator function
+    isRequired(value) {
+      return value ? true : 'Email is required';
+    },
+    onSubmit() {
+      alert('Submitting :(');
+    },
+    validateEmail(value) {
+      // if the field is empty
+      if (!value) {
+        return 'Email is required';
+      }
+      // if the field is not a valid email
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+        return 'Must be a valid email address';
+      }
+      // All is good
+      return true;
+    },
+    validatePassword(value) {
+      // if the field is empty
+      if (!value) {
+        return 'Password is required';
+      }
+      // if the field is not a valid password
+      if (!/^[a-zA-Z0-9]{8,}$/i.test(value)) {
+        return 'Password must contain at least 8 characters';
+      }
+      // All is good
+      return true;
+    },
+    confirmPassword(value) {
+      // if the field is empty
+      if (!value) {
+        return 'Retype your password';
+      }
+      // if the field is not a valid password
+      if (!(value == this.password)) {
+        return 'Passwords doesn\'t match';
+      }
+      // All is good
+      return true;
+    },
+  },
 }
 </script>
-
-<style>
-
-</style>

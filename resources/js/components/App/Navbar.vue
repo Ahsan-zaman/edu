@@ -15,7 +15,7 @@
                 </button>
             </div>
             <nav
-                :class="open ? '' : 'hidden'"
+                :class="open ? '' : 'hidden md:flex'"
                 class="flex flex-col flex-grow pb-4 md:pb-0 md:justify-end md:flex-row">
                 <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">GCSE</a>
@@ -25,7 +25,7 @@
                     href="#">AS</a>
                 <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">A Level</a>
-                <div class="relative" x-data="{ open: false }">
+                <div class="relative">
                     <button @click="open2 = !open2"
                         class="flex flex-row text-purple-600 bg-transparent items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 md:border md:border-purple-600">
                         <span>More</span>

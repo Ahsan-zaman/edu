@@ -100,33 +100,43 @@ __webpack_require__.r(__webpack_exports__);
       Questions: [{
         id: Math.round(Math.random() * 10000),
         details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/c_scale,q_auto:best,w_800/v1612556852/house-mouse_kebtrh.jpg" width="100%">',
-        question: 'Which genus does it belong to?',
-        answers: ['Mammal', 'musculus', 'Mus', 'Vertebrate'],
-        answer: 'Mus'
+        question: "Which genus does it belong to?",
+        answers: ["Mammal", "musculus", "Mus", "Vertebrate"],
+        answer: "Mus"
       }, {
         id: Math.round(Math.random() * 10000),
-        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/c_scale,q_auto:best,w_800/v1612556852/house-mouse_kebtrh.jpg" width="100%">',
-        question: 'Which genus does it belong to?',
-        answers: ['Mammal', 'musculus', 'Mus', 'Vertebrate']
+        details: '<code>The image below shows a house mouse, whose scientific name is Mus musculus.</code><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/v1605469528/pexels-dominika-roseclay-1036808_ne60d7.jpg" width="100%">',
+        question: "Which genus does it belong to?",
+        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
       }, {
         id: Math.round(Math.random() * 10000),
-        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/v1605469528/pexels-dominika-roseclay-1036808_ne60d7.jpg" width="100%">',
-        question: 'Which genus does it belong to?',
-        answers: ['Mammal', 'musculus', 'Mus', 'Vertebrate']
+        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><p>The image below shows a house mouse, whose scientific name is Mus musculus.</p>',
+        question: "Which genus does it belong to?",
+        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
       }, {
         id: Math.round(Math.random() * 10000),
-        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/v1599470366/pexels-skinny-alien-2318554_zr4pyg.jpg" width="100%">',
-        question: 'Which genus does it belong to?',
-        answers: ['Mammal', 'musculus', 'Mus', 'Vertebrate']
+        details: '',
+        question: "Which genus does it belong to?",
+        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
       }],
       Question: 0,
-      numbering: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+      numbering: ["A", "B", "C", "D", "E", "F", "G", "H"]
     };
   },
   methods: {
     next: function next() {
       this.Question += 1;
     }
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.Question) {
+      this.bus.emit('toast', {
+        id: Math.round(Math.random() * 10000),
+        title: 'Test',
+        text: 'This is a test notification',
+        type: 'error'
+      });
+    } else next();
   }
 });
 
@@ -201,59 +211,97 @@ var _hoisted_3 = {
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "text-2xl"
-}, " 1. Characteristics & Classification of Living Organisms ", -1
+}, " Characteristics & Classification of Living Organisms ", -1
 /* HOISTED */
 );
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "text-2xl mt-8"
-}, " Questions ", -1
-/* HOISTED */
-);
-
+var _hoisted_5 = {
+  key: 0,
+  "class": "my-4"
+};
 var _hoisted_6 = {
+  "class": "flex my-2 items-center"
+};
+
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  fill: "none",
+  "class": "w-6 mr-6",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "flex my-2 items-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  fill: "none",
+  "class": "w-6 mr-6",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, " No time limits ")], -1
+/* HOISTED */
+);
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "my-4"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "text-lg font-semibold"
+}, " Before you start "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", {
+  "class": "list-disc list-inside"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " You must complete this assessment in one session — make sure your internet is reliable. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " If you don’t earn a badge this time, you can retake this assessment once more. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " We won’t show your results to anyone without your permission. ")])], -1
+/* HOISTED */
+);
+
+var _hoisted_10 = {
+  key: 0
+};
+
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "text-2xl mt-8"
+}, "Questions", -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
   "class": "flex flex-wrap mt-2 mb-8"
 };
-var _hoisted_7 = {
-  key: 0,
-  "class": "shadow"
-};
-var _hoisted_8 = {
-  "class": "bg-gray-300 bg-opacity-25 flex justify-between p-4 md:p-8"
-};
-var _hoisted_9 = {
-  "class": "text-xl"
+var _hoisted_13 = {
+  "class": "p-4 md:p-8"
 };
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "uppercase"
-}, "marks:1", -1
-/* HOISTED */
-);
-
-var _hoisted_11 = {
-  "class": "p-4"
-};
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "border-b-2 border-gray-300 border-opacity-50 pt-4"
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "border-b-2 border-gray-300 border-opacity-50"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_13 = {
-  "class": "p-4"
-};
-var _hoisted_14 = {
-  "class": "md:ml-4"
-};
 var _hoisted_15 = {
-  "class": "my-4 text-xl font-semibold"
+  "class": "p-4 md:p-8"
 };
 var _hoisted_16 = {
-  "class": "font-bold mr-4"
+  "class": "my-4 flex flex-col"
 };
 var _hoisted_17 = {
+  "class": "text-xs text-gray-400"
+};
+var _hoisted_18 = {
+  "class": "text-xl font-semibold"
+};
+var _hoisted_19 = {
+  "class": "font-bold mr-4"
+};
+var _hoisted_20 = {
   key: 0,
   "class": "ml-auto w-8 h-8",
   fill: "none",
@@ -261,7 +309,7 @@ var _hoisted_17 = {
   stroke: "currentColor"
 };
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
   "stroke-width": "2",
@@ -270,19 +318,30 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_19 = {
-  "class": "flex space-x-4 my-4"
+var _hoisted_22 = {
+  "class": "flex space-x-4 py-4"
 };
-var _hoisted_20 = {
-  "class": "md:col-span-1 h-screen overflow-y-auto sticky top-2"
+var _hoisted_23 = {
+  "class": "md:col-span-1 md:h-screen overflow-y-auto md:sticky md:top-2"
 };
-var _hoisted_21 = {
+var _hoisted_24 = {
   "class": "text-txl text-white mr-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_progress_circle = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("progress-circle");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions.length, function (i) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+    name: "fade"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [!$data.Question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length) + " multiple choice questions ", 1
+      /* TEXT */
+      )]), _hoisted_8, _hoisted_9])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+    }),
+    _: 1
+    /* STABLE */
+
+  }), $data.Question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions.length, function (i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
       key: i,
       "class": "w-10 h-10 text-xl flex items-center justify-center bg-purple-600 text-white mr-4 rounded"
@@ -291,56 +350,65 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     );
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
     name: "fade"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [$data.Questions[$data.Question] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question + 1), 1
-      /* TEXT */
-      ), _hoisted_10]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-        innerHTML: $data.Questions[$data.Question].details
-      }, null, 8
-      /* PROPS */
-      , ["innerHTML"])]), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions[$data.Question].question), 1
-      /* TEXT */
-      ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions[$data.Question].answers, function (a, i) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+      return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions, function (q, i) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
           key: i,
-          onClick: function onClick($event) {
-            return $data.Questions[$data.Question].answer = a;
-          },
-          "class": [a === $data.Questions[$data.Question].answer ? 'border-purple-600' : '', "flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"]
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[i]), 1
+          "class": "shadow"
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+          innerHTML: q.details
+        }, null, 8
+        /* PROPS */
+        , ["innerHTML"])]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(a), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(q.question), 1
         /* TEXT */
-        ), a === $data.Questions[$data.Question].answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_17, [_hoisted_18])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
-        /* CLASS, PROPS */
-        , ["onClick"]);
+        )]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(q.answers, function (a, i) {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+            key: i,
+            onClick: function onClick($event) {
+              return q.answer = a;
+            },
+            "class": [a === q.answer ? 'border-purple-600' : '', "flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"]
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[i]), 1
+          /* TEXT */
+          ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(a), 1
+          /* TEXT */
+          ), a === q.answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_20, [_hoisted_21])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
+          /* CLASS, PROPS */
+          , ["onClick"]);
+        }), 128
+        /* KEYED_FRAGMENT */
+        ))])])], 512
+        /* NEED_PATCH */
+        )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, i + 1 == $data.Question]]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+      ))];
     }),
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    disabled: $data.Questions.length - 1 == $data.Question,
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    disabled: $data.Questions.length == $data.Question,
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.next && $options.next.apply($options, arguments);
     }),
-    "class": "ml-auto px-6 py-3 inline-block font-semibold text-white bg-purple-600 rounded cursor-pointer disabled:opacity-75"
-  }, " Next Question ", 8
-  /* PROPS */
-  , ["disabled"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
+    "class": ["px-6 py-3 inline-block font-semibold text-white bg-purple-600 rounded cursor-pointer disabled:opacity-75", $data.Question ? 'ml-auto' : 'mx-auto']
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question ? 'Next Question' : 'Start Quiz'), 11
+  /* TEXT, CLASS, PROPS */
+  , ["disabled"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
       key: i,
       "class": "flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_progress_circle, {
-      width: "50",
-      stroke: "4",
+      width: 50,
+      stroke: 4,
       color: "text-white",
       percent: t.percent
     }, null, 8
