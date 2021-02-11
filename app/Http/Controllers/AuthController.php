@@ -32,7 +32,7 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'role' => 'required|string|in:student,parent,teacher',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
                 'string',

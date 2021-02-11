@@ -74,7 +74,7 @@
 								placeholder="mike@gmail.com"
 							/>
 
-							<span class="text-xs text-red-600">{{ errors.email }}</span>
+							<span class="text-xs text-red-600" v-html="Array.isArray(errors.email) ? errors.email.join('<br> ') : errors.email"></span>
 						</div>
 						<div class="mt-8">
 							<label
@@ -137,7 +137,7 @@
 									/>
 								</svg>
 							</div>
-							<span class="text-xs text-red-600">{{ errors.password }}</span>
+							<span class="text-xs text-red-600" v-html="Array.isArray(errors.password) ? errors.password.join('<br> ') : errors.password"></span>
 						</div>
 
 						<div class="mt-8">
@@ -156,6 +156,7 @@
 								"
 								name="confirm_password"
 								type="password"
+                                v-model="cp"
 								:rules="confirmPassword"
 								:validateOnInput="true"
 								autocomplete="off"
@@ -354,7 +355,8 @@ export default {
 			name: "Ahsan Zaman",
 			role: "",
 			email: "ahsan@ahsan-web.ml",
-			password: "ahsan1997",
+			password: "",
+			cp: "",
 			show: false,
 
 			roles: ["Student", "Parent", "Teacher"],
@@ -367,12 +369,28 @@ export default {
 		},
 		onSubmit() {
             if(this.role){
-                alert("Submitting :(");
                 // const { setErrors } = useForm()
-
-                this.$refs.signupform.setErrors({
-                    email: "this is from server"
+                this.$http.post('/signup',{
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.cp,
+                    role: this.role.toLowerCase(),
                 })
+                .then(() => {
+                    this.$router.push('/login')
+                })
+                .catch(err => {
+                    if(err.response.status == 422){
+                        this.$refs.signupform.setErrors(err.response.data.errors)
+                    }
+                    this.bus.emit('toast',{
+                        title: 'Error',
+                        text: err.response.data.message,
+                        type:'error'
+                    })
+                })
+
             }else{
                 this.bus.emit('toast',{
                     title: 'Error',

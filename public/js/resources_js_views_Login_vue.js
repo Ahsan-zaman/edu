@@ -21,7 +21,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       email: 'ahsan@ahsan-web.ml',
-      password: 'ahsan1997',
+      password: '',
       show: false
     };
   },

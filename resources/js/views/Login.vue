@@ -120,7 +120,7 @@ export default {
   data(){
       return{
           email: 'ahsan@ahsan-web.ml',
-          password: 'ahsan1997',
+          password: '',
           show: false
       }
   },
