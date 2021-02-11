@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Exam;
+use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// SEO Pages
 Route::get('/', function () {
-    return view('home');
+    return view('home', ['exams' => Exam::limit(9)->get()]);
 });
+Route::get('/exams/{id}', function ($examId) {
+    return view('exam', ['exam' => Exam::whereId($examId)->first()]);
+});
+Route::get('/exams/{exam}/subjects/{subject}', function ($examId, $subjectId) {
+    return view('subject', ['subject' => Subject::whereId($subjectId)->first(), 'exam' => $examId]);
+});
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+});
+
+// SPA Pages
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');

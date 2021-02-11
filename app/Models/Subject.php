@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Exam extends Model
+class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
-    
-    public function subjects()
+    public function topics()
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Topic::class);
     }
 }

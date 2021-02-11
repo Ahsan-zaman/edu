@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exam;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
-class ExamController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,16 +13,6 @@ class ExamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return response(['message' => 'Working'], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -41,21 +31,10 @@ class ExamController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Exam  $exam
+     * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function show(Exam $exam)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Exam  $exam
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Exam $exam)
+    public function show(Subject $subject)
     {
         //
     }
@@ -64,10 +43,10 @@ class ExamController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Exam  $exam
+     * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Exam $exam)
+    public function update(Request $request, Subject $subject)
     {
         //
     }
@@ -75,10 +54,10 @@ class ExamController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Exam  $exam
+     * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Exam $exam)
+    public function destroy(Subject $subject)
     {
         //
     }

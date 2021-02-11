@@ -5,16 +5,16 @@ import mitt from "mitt";
 import axios from "axios";
 
 // let a = axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-const axiosIns = axios.create({
+let axiosIns = axios.create({
     // You can add your headers here
     // ================================
     baseURL: "/api/",
-    // timeout: 1000,
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
     },
 });
+axiosIns.defaults.withCredentials = true;
 // Request Interceptor
 axiosIns.interceptors.request.use(
     (config) => {

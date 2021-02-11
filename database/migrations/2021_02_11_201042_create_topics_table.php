@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExamsTable extends Migration
+class CreateTopicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateExamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('exams', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-
             $table->string('name');
+            $table->string('desc', 1024);
+            $table->float('progress')->default(0);
+            $table->foreignId('subject_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ class CreateExamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('topics');
     }
 }

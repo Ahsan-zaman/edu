@@ -16,19 +16,29 @@ class ExamsSeeder extends Seeder
     {
         $array = [
             [
-                'name' => 'GCSE'
+                'name' => 'GCSE',
+                'updated_at' => now(),
+                'created_at' => now()
             ],
             [
-                'name' => 'IGCSE'
+                'name' => 'IGCSE',
+                'updated_at' => now(),
+                'created_at' => now()
             ],
             [
-                'name' => 'AS'
+                'name' => 'AS',
+                'updated_at' => now(),
+                'created_at' => now()
             ],
             [
-                'name' => 'A Level'
+                'name' => 'A Level',
+                'updated_at' => now(),
+                'created_at' => now()
             ],
             [
-                'name' => 'ICT'
+                'name' => 'ICT',
+                'updated_at' => now(),
+                'created_at' => now()
             ]
         ];
 

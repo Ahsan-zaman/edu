@@ -37,8 +37,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.post('/login', {
         email: this.email,
         password: this.password
-      }).then(function (res) {
-        console.log(res.data);
+      }).then(function () {
+        localStorage.setItem('auth', true);
       })["catch"](function (err) {
         // console.log()
         _this.$refs.form.setErrors(err.response.data.errors);

@@ -135,8 +135,8 @@ export default {
         email: this.email,
         password: this.password 
     })
-    .then(res => {
-        console.log(res.data)
+    .then(() => {
+        localStorage.setItem('auth',true)
     })
     .catch(err => {
         // console.log()
