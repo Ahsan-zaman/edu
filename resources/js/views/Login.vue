@@ -131,16 +131,26 @@ export default {
     },
     onSubmit() {
     //   alert('Submitting :(');
-    this.$http.post('/login',{
-        email: this.email,
-        password: this.password 
-    })
+    this.$http.get('csrf-cookie')
     .then(() => {
-        localStorage.setItem('auth',true)
-    })
-    .catch(err => {
-        // console.log()
-        this.$refs.form.setErrors(err.response.data.errors)
+        this.$http.post('/login',{
+            email: this.email,
+            password: this.password 
+        })
+        .then(() => {
+            localStorage.setItem('auth',true)
+            location.replace('/')
+        })
+        .catch(err => {
+            if(err.response.status == 422){
+                this.$refs.signupform.setErrors(err.response.data.errors)
+            }
+            this.bus.emit('toast',{
+                title: 'Error',
+                text: err.response.data.message,
+                type:'error'
+            })
+        })
     })
     },
     validateEmail(value) {
