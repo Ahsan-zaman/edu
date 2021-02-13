@@ -131,25 +131,23 @@ export default {
     },
     onSubmit() {
     //   alert('Submitting :(');
-    this.$http.get('csrf-cookie')
+    this.$http.post('/login',{
+        email: this.email,
+        password: this.password 
+    })
     .then(() => {
-        this.$http.post('/login',{
-            email: this.email,
-            password: this.password 
-        })
-        .then(() => {
-            localStorage.setItem('auth',true)
-            location.replace('/')
-        })
-        .catch(err => {
-            if(err.response.status == 422){
-                this.$refs.signupform.setErrors(err.response.data.errors)
-            }
-            this.bus.emit('toast',{
-                title: 'Error',
-                text: err.response.data.message,
-                type:'error'
-            })
+        // this.$http.get('csrf-cookie')
+        localStorage.setItem('auth',true)
+        location.replace('/')
+    })
+    .catch(err => {
+        if(err.response.status == 422){
+            this.$refs.signupform.setErrors(err.response.data.errors)
+        }
+        this.bus.emit('toast',{
+            title: 'Error',
+            text: err.response.data.message,
+            type:'error'
         })
     })
     },
