@@ -419,8 +419,14 @@ export default {
 				return "Password is required";
 			}
 			// if the field is not a valid password
-			if (!/^[a-zA-Z0-9]{8,}$/i.test(value)) {
+			if (value.length < 8) {
 				return "Password must contain at least 8 characters";
+			}
+			if (value.search(/[0-9]/i) < 0) {
+				return "Password must contain at least one digit";
+			}
+			if (value.search(/[a-zA-Z]/i) < 0) {
+				return "Password must contain at least one character";
 			}
 			// All is good
 			return true;

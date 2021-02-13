@@ -54,88 +54,94 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      Topics: [{
-        name: "Characteristics & Classification of Living Organisms",
-        percent: 89
-      }, {
-        name: "Organisation of the Organism",
-        percent: 14
-      }, {
-        name: "Movement In & Out of Cells",
-        percent: 62
-      }, {
-        name: "Biological Molecules",
-        percent: 33
-      }, {
-        name: "Enzymes",
-        percent: 0
-      }, {
-        name: "Plant Nutrition",
-        percent: 99
-      }, {
-        name: "Human Nutrition",
-        percent: 48
-      }, {
-        name: "Transport in Plants",
-        percent: 100
-      }, {
-        name: "Human Nutrition",
-        percent: 48
-      }, {
-        name: "Transport in Plants",
-        percent: 100
-      }, {
-        name: "Human Nutrition",
-        percent: 48
-      }, {
-        name: "Transport in Plants",
-        percent: 100
-      }, {
-        name: "Human Nutrition",
-        percent: 48
-      }, {
-        name: "Transport in Plants",
-        percent: 100
-      }],
-      Questions: [{
-        id: Math.round(Math.random() * 10000),
-        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/c_scale,q_auto:best,w_800/v1612556852/house-mouse_kebtrh.jpg" width="100%">',
-        question: "Which genus does it belong to?",
-        answers: ["Mammal", "musculus", "Mus", "Vertebrate"],
-        answer: "Mus"
-      }, {
-        id: Math.round(Math.random() * 10000),
-        details: '<code>The image below shows a house mouse, whose scientific name is Mus musculus.</code><img src="https://res.cloudinary.com/ahsan-zaman/image/upload/v1605469528/pexels-dominika-roseclay-1036808_ne60d7.jpg" width="100%">',
-        question: "Which genus does it belong to?",
-        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
-      }, {
-        id: Math.round(Math.random() * 10000),
-        details: '<p>The image below shows a house mouse, whose scientific name is Mus musculus.</p><p>The image below shows a house mouse, whose scientific name is Mus musculus.</p>',
-        question: "Which genus does it belong to?",
-        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
-      }, {
-        id: Math.round(Math.random() * 10000),
-        details: '',
-        question: "Which genus does it belong to?",
-        answers: ["Mammal", "musculus", "Mus", "Vertebrate"]
-      }],
+      Topics: [],
+      QuizDetails: {
+        topic: null,
+        q_count: 0,
+        time_limit: 0
+      },
+      Questions: [],
       Question: 0,
-      numbering: ["A", "B", "C", "D", "E", "F", "G", "H"]
+      numbering: ["A", "B", "C", "D", "E", "F", "G", "H"],
+      loading: true
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$http.get("/subjects/".concat(this.$route.params.subject)).then(function (res) {
+      _this.Topics = res.data;
+    });
+    this.$http.get("/topics/".concat(this.$route.params.id)).then(function (res) {
+      _this.QuizDetails = res.data[0];
+      _this.Questions = res.data[1];
+      _this.loading = false;
+    });
   },
   methods: {
     next: function next() {
-      this.Question += 1;
+      var _this2 = this;
+
+      if (!this.Question) {
+        if (this.QuizDetails.time_limit) {
+          window.setInterval(function () {
+            _this2.QuizDetails.time_limit -= 1;
+          }, 1000);
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+          // Cancel the event
+          e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+          // Chrome requires returnValue to be set
+
+          e.returnValue = 'Why tho ?';
+        });
+      }
+
+      if (this.Question + 1 <= this.Questions.length) {
+        this.loading = true;
+        setTimeout(function () {
+          _this2.loading = false;
+        }, 1000); // Answering completed
+
+        this.Question += 1;
+      } else {
+        this.bus.emit('toast', {
+          title: 'Success',
+          text: 'Quiz completed but not saved. Under development :D',
+          type: 'success'
+        });
+      }
+    },
+    answer: function answer(a, i) {
+      this.Questions[i].answer = a; // Make request to backeend to track answers 7 mark 
+
+      this.next();
+    }
+  },
+  computed: {
+    minutes: function minutes() {
+      if (this.QuizDetails.time_limit) {
+        return Math.floor(this.QuizDetails.time_limit / 60).toString().padStart(2, '0');
+      }
+
+      return '00';
+    },
+    seconds: function seconds() {
+      if (this.QuizDetails.time_limit) {
+        return Math.floor(this.QuizDetails.time_limit % 60).toString().padStart(2, '0');
+      }
+
+      return '00';
     }
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.Question) {
-      this.bus.emit('toast', {
-        id: Math.round(Math.random() * 10000),
-        title: 'Test',
-        text: 'This is a test notification',
-        type: 'error'
-      });
+      var r = confirm('Chnages you made may not be saved.');
+
+      if (r) {
+        next();
+      }
     } else next();
   }
 });
@@ -206,15 +212,12 @@ var _hoisted_2 = {
   "class": "md:col-span-2"
 };
 var _hoisted_3 = {
-  "class": "p-2"
+  "class": "p-4 relative shadow"
 };
-
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_4 = {
+  key: 0,
   "class": "text-2xl"
-}, " Characteristics & Classification of Living Organisms ", -1
-/* HOISTED */
-);
-
+};
 var _hoisted_5 = {
   key: 0,
   "class": "my-4"
@@ -237,9 +240,11 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_8 = {
   "class": "flex my-2 items-center"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+};
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   fill: "none",
   "class": "w-6 mr-6",
   viewBox: "0 0 24 24",
@@ -249,11 +254,11 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   "stroke-linejoin": "round",
   "stroke-width": "2",
   d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, " No time limits ")], -1
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "my-4"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "text-lg font-semibold"
@@ -263,45 +268,47 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_10 = {
-  key: 0
+var _hoisted_11 = {
+  key: 1,
+  "class": "my-4"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "text-2xl mt-8"
-}, "Questions", -1
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "text-xs w-full text-gray-400"
+}, " Time remaining ", -1
 /* HOISTED */
 );
 
-var _hoisted_12 = {
-  "class": "flex flex-wrap mt-2 mb-8"
-};
 var _hoisted_13 = {
+  "class": "text-6xl text-purple-600 font-bold"
+};
+var _hoisted_14 = {
+  key: 0,
   "class": "p-4 md:p-8"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "border-b-2 border-gray-300 border-opacity-50"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "p-4 md:p-8"
 };
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "my-4 flex flex-col"
 };
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "text-xs text-gray-400"
 };
-var _hoisted_18 = {
+var _hoisted_19 = {
   "class": "text-xl font-semibold"
 };
-var _hoisted_19 = {
+var _hoisted_20 = {
   "class": "font-bold mr-4"
 };
-var _hoisted_20 = {
+var _hoisted_21 = {
   key: 0,
   "class": "ml-auto w-8 h-8",
   fill: "none",
@@ -309,7 +316,7 @@ var _hoisted_20 = {
   stroke: "currentColor"
 };
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
   "stroke-width": "2",
@@ -318,66 +325,69 @@ var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_22 = {
+var _hoisted_23 = {
+  key: 2,
+  "class": "absolute top-0 left-0 h-full w-full z-50 flex items-center justify-center bg-gray-100 bg-opacity-75"
+};
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"space-y-4 w-9/12 animate-pulse\"><div class=\"h-4 bg-purple-300 rounded\"></div><div class=\"h-4 bg-purple-300 rounded w-3/6\"></div><div class=\"h-4 bg-purple-300 rounded w-5/6\"></div><div class=\"h-4 bg-purple-300 rounded w-6/6\"></div><div class=\"h-4 bg-purple-300 rounded w-2/6\"></div></div>", 1);
+
+var _hoisted_25 = {
   "class": "flex space-x-4 py-4"
 };
-var _hoisted_23 = {
+var _hoisted_26 = {
   "class": "md:col-span-1 md:h-screen overflow-y-auto md:sticky md:top-2"
 };
-var _hoisted_24 = {
+var _hoisted_27 = {
   "class": "text-txl text-white mr-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_progress_circle = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("progress-circle");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [$data.Topics.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.topic), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
     name: "fade"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [!$data.Question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length) + " multiple choice questions ", 1
+      return [!$data.Question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.q_count) + " multiple choice questions ", 1
       /* TEXT */
-      )]), _hoisted_8, _hoisted_9])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.time_limit ? "".concat($data.QuizDetails.time_limit / 60, " Minutes") : 'No time limits'), 1
+      /* TEXT */
+      )]), _hoisted_10])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
     /* STABLE */
 
-  }), $data.Question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions.length, function (i) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-      key: i,
-      "class": "w-10 h-10 text-xl flex items-center justify-center bg-purple-600 text-white mr-4 rounded"
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(i), 1
-    /* TEXT */
-    );
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
+  }), $data.Question && $data.QuizDetails.time_limit ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.minutes) + " : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.seconds), 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
     name: "fade"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions, function (q, i) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-          key: i,
-          "class": "shadow"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+          key: i
+        }, [q.details ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
           innerHTML: q.details
         }, null, 8
         /* PROPS */
-        , ["innerHTML"])]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length), 1
+        , ["innerHTML"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(q.question), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(q.question), 1
         /* TEXT */
-        )]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(q.answers, function (a, i) {
+        )]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(q.answers, function (a, j) {
           return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-            key: i,
+            key: j,
             onClick: function onClick($event) {
-              return q.answer = a;
+              return $options.answer(a, i);
             },
             "class": [a === q.answer ? 'border-purple-600' : '', "flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"]
-          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[i]), 1
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[i]), 1
           /* TEXT */
           ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(a), 1
           /* TEXT */
-          ), a === q.answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_20, [_hoisted_21])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
+          ), a === q.answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_21, [_hoisted_22])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
           /* CLASS, PROPS */
           , ["onClick"]);
         }), 128
@@ -392,19 +402,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    disabled: $data.Questions.length == $data.Question,
+  }), $data.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_23, [_hoisted_24])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.next && $options.next.apply($options, arguments);
     }),
     "class": ["px-6 py-3 inline-block font-semibold text-white bg-purple-600 rounded cursor-pointer disabled:opacity-75", $data.Question ? 'ml-auto' : 'mx-auto']
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question ? 'Next Question' : 'Start Quiz'), 11
-  /* TEXT, CLASS, PROPS */
-  , ["disabled"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question ? 'Next Question' : 'Start Quiz'), 3
+  /* TEXT, CLASS */
+  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+      href: "/exams/5/subjects/1/quizes/".concat(t.id),
       key: i,
       "class": "flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_progress_circle, {
       width: 50,
@@ -413,7 +423,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       percent: t.percent
     }, null, 8
     /* PROPS */
-    , ["percent"])]);
+    , ["percent"])], 8
+    /* PROPS */
+    , ["href"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]);

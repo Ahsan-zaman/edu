@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class,'login']);
 Route::post('/signup', [AuthController::class,'signup']);
 
+Route::apiResources([
+    'subjects' => SubjectController::class
+]);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResources([
-        'exams' => ExamController::class
+        'exams' => ExamController::class,
+        'topics' => TopicController::class
     ]);
 });

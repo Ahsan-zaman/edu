@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TopicResource;
-use App\Models\Subject;
+use App\Models\Question;
 use Illuminate\Http\Request;
 
-class SubjectController extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,22 +31,22 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Subject  $subject
+     * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Subject $subject)
+    public function show(Question $question)
     {
-        return response(TopicResource::collection($subject->topics()->select('name', 'progress', 'id')->get()), 200);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Subject  $subject
+     * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request, Question $question)
     {
         //
     }
@@ -55,10 +54,10 @@ class SubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Subject  $subject
+     * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subject $subject)
+    public function destroy(Question $question)
     {
         //
     }

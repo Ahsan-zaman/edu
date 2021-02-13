@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionResource;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,20 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        //
+        // return response(QuestionResource::collection($topic->questions()->inRandomOrder()->get()), 200);
+        $q = $topic->questions()->inRandomOrder()->get();
+        $q_count = $q->count();
+        $time_limit = [
+            $q_count*1*60,
+            $q_count*1.5*60,
+            $q_count*2*60,
+            null
+        ];
+        return response([[
+            'topic' => $topic->name,
+            'q_count' => $q_count,
+            'time_limit' => $time_limit[random_int(0, 3)]
+        ],QuestionResource::collection($q)], 200);
     }
 
     /**

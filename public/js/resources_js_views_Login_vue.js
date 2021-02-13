@@ -34,23 +34,22 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       //   alert('Submitting :(');
-      this.$http.get('csrf-cookie').then(function () {
-        _this.$http.post('/login', {
-          email: _this.email,
-          password: _this.password
-        }).then(function () {
-          localStorage.setItem('auth', true);
-          location.replace('/');
-        })["catch"](function (err) {
-          if (err.response.status == 422) {
-            _this.$refs.signupform.setErrors(err.response.data.errors);
-          }
+      this.$http.post('/login', {
+        email: this.email,
+        password: this.password
+      }).then(function () {
+        // this.$http.get('csrf-cookie')
+        localStorage.setItem('auth', true);
+        location.replace('/');
+      })["catch"](function (err) {
+        if (err.response.status == 422) {
+          _this.$refs.signupform.setErrors(err.response.data.errors);
+        }
 
-          _this.bus.emit('toast', {
-            title: 'Error',
-            text: err.response.data.message,
-            type: 'error'
-          });
+        _this.bus.emit('toast', {
+          title: 'Error',
+          text: err.response.data.message,
+          type: 'error'
         });
       });
     },
