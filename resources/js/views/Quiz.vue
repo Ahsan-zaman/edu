@@ -68,7 +68,7 @@
 									:class="a === q.answer ? 'border-purple-600' : ''"
 									class="flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"
 								>
-									<div class="font-bold mr-4">{{ numbering[i] }}</div>
+									<div class="font-bold mr-4">{{ numbering[j] }}</div>
 									<div>{{ a }}</div>
 									<svg
 										v-if="a === q.answer"
