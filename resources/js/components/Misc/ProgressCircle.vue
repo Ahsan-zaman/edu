@@ -1,24 +1,31 @@
 <template>
   <svg
-    class="progress-ring relative"
+    class="progress-ring relative text-2xl"
+    :class="color"
     :width="width"
     :height="width">
-    <circle
-        class="progress-ring__circle absolute stroke-current text-white text-opacity-25"
-        :stroke-width="stroke"
-        fill="transparent"
-        :r="radius"
-        :cx="width/2"
-        :cy="width/2"/>
-    <circle
-        class="progress-ring__circle absolute"
-        :class="`stroke-current ${color}`"
-        :style="`stroke-dasharray: ${circumference},${circumference};stroke-dashoffset :${setProgress(percent)}`"
-        :stroke-width="stroke"
-        fill="transparent"
-        :r="radius"
-        :cx="width/2"
-        :cy="width/2"/>
+    <g>
+        <circle
+            class="progress-ring__circle absolute stroke-current text-gray-400 text-opacity-25"
+            :stroke-width="stroke/2"
+            fill="transparent"
+            :r="radius"
+            :cx="width/2"
+            :cy="width/2"/>
+        <text x="50%" y="50%" text-anchor="middle" class="stroke-current fill-current" stroke-width="1px" dy=".3em">
+            {{percent}}%
+        </text>
+        <circle
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            class="progress-ring__circle absolute stroke-current"
+            :style="`stroke-dasharray: ${circumference},${circumference};stroke-dashoffset :${setProgress(percent)}`"
+            :stroke-width="stroke"
+            fill="transparent"
+            :r="radius"
+            :cx="width/2"
+            :cy="width/2"/>
+    </g>
     </svg>
 </template>
 
@@ -40,6 +47,7 @@ export default {
     },
     methods:{
         setProgress(percent) {
+            if(percent == 0) return (this.circumference - percent / 100 * this.circumference) + 1
             return this.circumference - percent / 100 * this.circumference;
         }
     }

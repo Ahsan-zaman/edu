@@ -15,7 +15,7 @@
                 </button>
             </div>
             <nav
-                :class="open ? '' : 'hidden md:flex'"
+                :class="open ? '' : 'hidden md:flex items-center'"
                 class="flex flex-col flex-grow pb-4 md:pb-0 md:justify-end md:flex-row">
                 <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">GCSE</a>
@@ -25,18 +25,13 @@
                     href="#">AS</a>
                 <a class="px-4 py-2 text-sm font-semibold bg-transparent md:rounded-lg md:ml-4 hover:text-white hover:bg-purple-600"
                     href="#">A Level</a>
-                <div class="relative">
-                    <button @click="open2 = !open2"
-                        class="flex flex-row text-purple-600 bg-transparent items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 md:border md:border-purple-600">
-                        <span>More</span>
-                        <svg fill="currentColor" viewBox="0 0 20 20"
-                            :class="{'rotate-180': open2, 'rotate-0': !open2}"
-                            class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1">
-                            <path fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
+                <div v-if="auth" class="relative">
+                    <div @click="open2 = !open2" class="flex flex-col items-center">
+                        <img class="inline object-cover w-8 h-8 rounded-full hidden md:block"
+                            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                            alt="image" />
+                        <span class="text-xs">{{ user.name }}</span>
+                    </div>
                     <div v-if="open2" class="absolute right-0 w-full md:max-w-screen-sm md:w-screen mt-2 origin-top-right">
                         <div class="px-2 pt-2 pb-4 bg-white rounded-md shadow-lg dark-mode:bg-gray-700">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -94,11 +89,15 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row">
+                <!-- Login/ Logout  -->
+                <div v-if="!auth" class="flex flex-col md:flex-row">
                     <router-link class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent text-purple-600 md:mt-0 md:ml-4 hover:text-gray-900"
                         to="/login">Login</router-link>
                     <router-link class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent md:rounded border hover:border-purple-600"
                         to="/signup">Join Now</router-link>
+                </div>
+                <div v-else class="flex flex-col md:flex-row">
+                    <div @click="logout" class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent md:rounded border hover:border-purple-600 cursor-pointer">Log Out</div>
                 </div>
             </nav>
         </div>
@@ -112,7 +111,15 @@ export default {
     data(){
         return{
             open: false,
-            open2: false
+            open2: false,
+            auth: localStorage.getItem('auth'),
+            user : JSON.parse(localStorage.getItem('user'))
+        }
+    },
+    methods:{
+        logout(){
+            localStorage.setItem('auth','')
+            location.href = '/logout'
         }
     }
 }

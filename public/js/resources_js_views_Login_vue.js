@@ -37,10 +37,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.post('/login', {
         email: this.email,
         password: this.password
-      }).then(function () {
+      }).then(function (res) {
         // this.$http.get('csrf-cookie')
         localStorage.setItem('auth', true);
-        location.replace('/');
+        localStorage.setItem('user', JSON.stringify(res.data));
+
+        _this.$router.push({
+          name: 'Home'
+        });
       })["catch"](function (err) {
         if (err.response.status == 422) {
           _this.$refs.signupform.setErrors(err.response.data.errors);

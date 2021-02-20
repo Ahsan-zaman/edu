@@ -13,6 +13,15 @@ class Question extends Model
 
     public function answers()
     {
-        return $this->hasMany(Answer::class);
+        return $this->belongsToMany(Answer::class);
+    }
+    public function answer()
+    {
+        return $this->belongsToMany(Answer::class, 'right_answer_question');
+    }
+
+    public function quizes()
+    {
+        return $this->belongsToMany(Quiz::class);
     }
 }

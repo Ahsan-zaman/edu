@@ -2,6 +2,7 @@
 
 use App\Models\Exam;
 use App\Models\Subject;
+use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,9 @@ Route::get('/exams/{id}', function ($examId) {
 });
 Route::get('/exams/{exam}/subjects/{subject}', function ($examId, $subjectId) {
     return view('subject', ['subject' => Subject::whereId($subjectId)->first(), 'exam' => $examId]);
+});
+Route::get('/exams/{exam}/subjects/{subject}/topics/{topic}', function ($examId, $subjectId, $topicId) {
+    return view('topic', ['subject' => $subjectId, 'exam' => $examId, 'topic' => Topic::whereId($topicId)->first()]);
 });
 Route::get('/logout', function () {
     Auth::logout();

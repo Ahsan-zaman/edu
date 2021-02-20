@@ -113,10 +113,19 @@
                         alt="image" />
                     <span class="text-xs">{{ Auth::user()->name }}</span>
                 </div>
-                <a class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent rounded border hover:border-purple-600"
+                <a id="logout"
+                    class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent rounded border hover:border-purple-600"
                     href="{{ url('/logout') }}">Log Out</a>
                 @endauth
             </div>
         </nav>
     </div>
 </div>
+<script>
+    let logout = document.querySelector('a#logout')
+    logout.addEventListener('click', (e) => {
+        e.preventDefault()
+        localStorage.setItem('auth', '')
+        location.href = '/logout'
+    })
+</script>

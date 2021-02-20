@@ -29,11 +29,11 @@
 
             <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
                 @foreach($subject->topics as $key => $topic)
-                <a href="{{ url('exams/' . $exam . '/subjects/' . $subject->id . '/quizes/' . $topic->id ) }}"
+                <a href="{{ url('exams/' . $exam . '/subjects/' . $subject->id . '/topics/' . $topic->id ) }}"
                     class="group p-2 sm:w-1/2 w-full">
                     <div class="group-hover:shadow-lg bg-gray-100 rounded flex p-4 h-full items-center">
-                        <div class="flex flex-col items-center pr-4">
-                            @if($topic->progress == 1)
+                        <div class="flex flex-col items-center pr-4 font-mono text-6xl text-purple-600">
+                            <!-- @if($topic->progress == 1)
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="3" class="text-purple-600 w-16 h-16 flex-shrink-0" viewBox="0 0 24 24">
                                 <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
@@ -44,9 +44,9 @@
                                 stroke-width="3" class="text-purple-600 w-16 h-16 flex-shrink-0" viewBox="0 0 24 24">
                                 <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
                             </svg>
-                            @endif
-
-                            <span>{{ $topic->progress * 100 }}%</span>
+                            @endif -->
+                            {{$key+1}}
+                            <!-- <span>{{ $topic->progress * 100 }}%</span> -->
                         </div>
                         <div>
                             <p class="title-font font-medium group-hover:text-purple-600">{{$topic->name}}</p>

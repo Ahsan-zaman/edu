@@ -135,10 +135,11 @@ export default {
         email: this.email,
         password: this.password 
     })
-    .then(() => {
+    .then((res) => {
         // this.$http.get('csrf-cookie')
         localStorage.setItem('auth',true)
-        location.replace('/')
+        localStorage.setItem('user',JSON.stringify(res.data))
+        this.$router.push({name: 'Home'})
     })
     .catch(err => {
         if(err.response.status == 422){

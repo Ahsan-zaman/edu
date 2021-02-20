@@ -235,7 +235,7 @@ class QuestionSeeder extends Seeder
                     </code>
                 ',
                 'q' => 'What is the output of the above code ?',
-                'answer' => Str::slug("{'oranges', 'limes'}"),
+                'answer' => Str::slug("{'Title': 'Object Oriented Programming', 'courseCode': 'M251'}"),
                 'answers' => [
                     "{'Title': 'Object Oriented Programming', 'courseCode': 'M251'}",
                     "{'Title': 'Object Oriented Programming'}",
@@ -247,20 +247,32 @@ class QuestionSeeder extends Seeder
         ];
 
         foreach ($questions as $q) {
-            $answers = [];
+            $ids = [];
             $question = Question::create([
                 'question' => $q['q'],
                 'details' => $q['details'],
-                'answer' => $q['answer'],
+                'type' => 'public',
                 'topic_id' => $q['topic'],
             ]);
             foreach ($q['answers'] as $answer) {
-                $answers[] = [
+                $id = DB::table('answers')->insertGetId([
                     'answer' => $answer,
-                    'question_id' => $question->id
+                ]);
+
+                if (Str::slug($answer) === $q['answer']) {
+                    $question->answer()->sync([$id => [
+                        'created_at' => now()->format('Y-m-d H:i:s'),
+                        'updated_at' => now()->format('Y-m-d H:i:s')
+                    ]]);
+                }
+
+                $ids[$id] = [
+                    'created_at' => now()->format('Y-m-d H:i:s'),
+                    'updated_at' => now()->format('Y-m-d H:i:s')
                 ];
             }
-            DB::table('answers')->insert($answers);
+            // dd($ids);
+            $question->answers()->sync($ids);
         }
     }
 }
