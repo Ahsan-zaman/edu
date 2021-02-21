@@ -80,11 +80,11 @@
                     <p class="my-3">Generated with AI</p>
                     <p class="my-3">Take random quizes based on difficulty level you choose & pratice.</p>
                     <div class="flex flex-col md:flex-row justify-between w-full">
-                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=Easy' ) }}"
+                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=easy' ) }}"
                             class="mx-auto text-white bg-purple-600 border-2 border-purple-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-purple-600 rounded">Easy</a>
-                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=Medium' ) }}"
+                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=medium' ) }}"
                             class="mx-auto text-white bg-yellow-400 border-2 border-yellow-400 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-yellow-400 rounded">Medium</a>
-                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=Hard' ) }}"
+                        <a href="{{ url('quizes/random?topic=' . $topic->id . '&difficulty=hard' ) }}"
                             class="mx-auto text-white bg-red-600 border-2 border-red-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-red-600 rounded">Hard</a>
                     </div>
                 </div>
