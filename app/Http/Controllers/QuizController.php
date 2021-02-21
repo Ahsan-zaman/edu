@@ -128,6 +128,7 @@ class QuizController extends Controller
             ],
             [
                 'answer_id' => $request->answer_id,
+                'answered_at' => now()->format('Y-m-d H:i:s'),
                 'correct' => $request->answer_id == $question->answer->first()->pivot->answer_id
             ]
         );
