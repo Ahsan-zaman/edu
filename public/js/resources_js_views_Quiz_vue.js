@@ -70,17 +70,17 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    this.$http.get("/subjects/".concat(this.$route.params.subject)).then(function (res) {
+    this.$http.get("/quizes/").then(function (res) {
       _this.Topics = res.data;
     });
-    this.$http.get("/topics/".concat(this.$route.params.id)).then(function (res) {
+    this.$http.get("/quizes/".concat(this.$route.params.id)).then(function (res) {
       _this.QuizDetails = res.data[0];
       _this.Questions = res.data[1];
       _this.loading = false;
     });
   },
   methods: {
-    next: function next() {
+    next: function next(a, i) {
       var _this2 = this;
 
       if (!this.Question) {
@@ -90,34 +90,44 @@ __webpack_require__.r(__webpack_exports__);
           }, 1000);
         }
 
-        window.addEventListener('beforeunload', function (e) {
-          // Cancel the event
-          e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-          // Chrome requires returnValue to be set
-
-          e.returnValue = 'Why tho ?';
-        });
+        window.addEventListener('beforeunload', this.b4u);
+        this.Question += 1;
       }
 
-      if (this.Question + 1 <= this.Questions.length) {
+      if (this.Question <= this.Questions.length && a) {
         this.loading = true;
-        setTimeout(function () {
+        this.$http.post("/quiz/answer/".concat(this.$route.params.id), {
+          question_id: this.Questions[i].id,
+          answer_id: a.id
+        }).then(function (res) {
+          // console.log(res.data)
           _this2.loading = false;
-        }, 1000); // Answering completed
-
-        this.Question += 1;
-      } else {
+          _this2.Question += 1;
+        })["catch"](function (err) {
+          _this2.bus.emit('toast', {
+            title: 'Error',
+            text: err.response.data.message,
+            type: 'error'
+          });
+        }); // Answering completed
+      } else if (this.Question + 1 > this.Questions.length) {
+        window.removeEventListener('beforeunload', this.b4u);
+        this.$router.push('/quiz/my');
         this.bus.emit('toast', {
           title: 'Success',
-          text: 'Quiz completed but not saved. Under development :D',
+          text: 'Quiz completed & saved :D',
           type: 'success'
         });
       }
     },
     answer: function answer(a, i) {
-      this.Questions[i].answer = a; // Make request to backeend to track answers 7 mark 
+      this.Questions[i].answer = a.id; // Make request to backeend to track answers 7 mark 
 
-      this.next();
+      this.next(a, i);
+    },
+    b4u: function b4u(e) {
+      e.preventDefault();
+      e.returnValue = '';
     }
   },
   computed: {
@@ -137,7 +147,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-    if (this.Question) {
+    if (this.Question < this.Questions.length) {
       var r = confirm('Chnages you made may not be saved.');
 
       if (r) {
@@ -172,7 +182,7 @@ var _hoisted_1 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", {
-    "class": ["progress-ring relative text-2xl", $props.color],
+    "class": ["progress-ring relative", $props.color],
     width: $props.width,
     height: $props.width
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("g", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
@@ -228,7 +238,6 @@ var _hoisted_3 = {
   "class": "p-4 relative shadow"
 };
 var _hoisted_4 = {
-  key: 0,
   "class": "text-2xl"
 };
 var _hoisted_5 = {
@@ -271,57 +280,57 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "my-4"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "text-lg font-semibold"
-}, " Before you start "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", {
-  "class": "list-disc list-inside"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " You must complete this assessment in one session — make sure your internet is reliable. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " If you don’t earn a badge this time, you can retake this assessment once more. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, " We won’t show your results to anyone without your permission. ")])], -1
-/* HOISTED */
-);
-
-var _hoisted_11 = {
-  key: 1,
+var _hoisted_10 = {
   "class": "my-4"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "text-lg font-semibold"
+}, " Before you start ", -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
+  key: 0,
+  "class": "my-4"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "text-xs w-full text-gray-400"
 }, " Time remaining ", -1
 /* HOISTED */
 );
 
-var _hoisted_13 = {
+var _hoisted_14 = {
   "class": "text-6xl text-purple-600 font-bold"
 };
-var _hoisted_14 = {
+var _hoisted_15 = {
   key: 0,
   "class": "p-4 md:p-8"
 };
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "border-b-2 border-gray-300 border-opacity-50"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "p-4 md:p-8"
 };
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "my-4 flex flex-col"
 };
-var _hoisted_18 = {
+var _hoisted_19 = {
   "class": "text-xs text-gray-400"
 };
-var _hoisted_19 = {
+var _hoisted_20 = {
   "class": "text-xl font-semibold"
 };
-var _hoisted_20 = {
+var _hoisted_21 = {
   "class": "font-bold mr-4"
 };
-var _hoisted_21 = {
+var _hoisted_22 = {
   key: 0,
   "class": "ml-auto w-8 h-8",
   fill: "none",
@@ -329,7 +338,7 @@ var _hoisted_21 = {
   stroke: "currentColor"
 };
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
   "stroke-width": "2",
@@ -338,28 +347,32 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_23 = {
-  key: 2,
+var _hoisted_24 = {
+  key: 1,
   "class": "absolute top-0 left-0 h-full w-full z-50 flex items-center justify-center bg-gray-100 bg-opacity-75"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"space-y-4 w-9/12 animate-pulse\"><div class=\"h-4 bg-purple-300 rounded\"></div><div class=\"h-4 bg-purple-300 rounded w-3/6\"></div><div class=\"h-4 bg-purple-300 rounded w-5/6\"></div><div class=\"h-4 bg-purple-300 rounded w-6/6\"></div><div class=\"h-4 bg-purple-300 rounded w-2/6\"></div></div>", 1);
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"space-y-4 w-9/12 animate-pulse\"><div class=\"h-4 bg-purple-300 rounded\"></div><div class=\"h-4 bg-purple-300 rounded w-3/6\"></div><div class=\"h-4 bg-purple-300 rounded w-5/6\"></div><div class=\"h-4 bg-purple-300 rounded w-6/6\"></div><div class=\"h-4 bg-purple-300 rounded w-2/6\"></div></div>", 1);
 
-var _hoisted_25 = {
+var _hoisted_26 = {
   "class": "flex space-x-4 py-4"
 };
-var _hoisted_26 = {
-  "class": "md:col-span-1 md:h-screen overflow-y-auto md:sticky md:top-2"
-};
 var _hoisted_27 = {
-  "class": "text-txl text-white mr-2"
+  "class": "md:col-span-1 md:max-h-screen overflow-y-auto md:sticky md:top-2"
+};
+var _hoisted_28 = {
+  key: 0,
+  "class": "w-full bg-gray-200 flex items-center justify-center text-gray-600 h-48 rounded"
+};
+var _hoisted_29 = {
+  "class": "text-white mr-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_progress_circle = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("progress-circle");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [$data.Topics.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.topic), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.topic), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
     name: "fade"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -367,12 +380,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.QuizDetails.time_limit ? "".concat($data.QuizDetails.time_limit / 60, " Minutes") : 'No time limits'), 1
       /* TEXT */
-      )]), _hoisted_10])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+        innerHTML: $data.QuizDetails.desc
+      }, null, 8
+      /* PROPS */
+      , ["innerHTML"])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
     /* STABLE */
 
-  }), $data.Question && $data.QuizDetails.time_limit ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.minutes) + " : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.seconds), 1
+  }), $data.Question && $data.QuizDetails.time_limit ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.minutes) + " : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.seconds), 1
   /* TEXT */
   )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
     name: "fade"
@@ -381,13 +398,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Questions, function (q, i) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
           key: i
-        }, [q.details ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+        }, [q.details ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
           innerHTML: q.details
         }, null, 8
         /* PROPS */
-        , ["innerHTML"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length), 1
+        , ["innerHTML"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Questions.length), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(q.question), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(q.question), 1
         /* TEXT */
         )]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(q.answers, function (a, j) {
           return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
@@ -395,12 +412,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             onClick: function onClick($event) {
               return $options.answer(a, i);
             },
-            "class": [a === q.answer ? 'border-purple-600' : '', "flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"]
-          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[j]), 1
+            "class": [a.id === q.answer ? 'border-purple-600' : '', "flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"]
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numbering[j]), 1
           /* TEXT */
-          ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(a), 1
+          ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(a.answer), 1
           /* TEXT */
-          ), a === q.answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_21, [_hoisted_22])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
+          ), a.id === q.answer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_22, [_hoisted_23])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10
           /* CLASS, PROPS */
           , ["onClick"]);
         }), 128
@@ -415,25 +432,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), $data.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_23, [_hoisted_24])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.next && $options.next.apply($options, arguments);
+  }), $data.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_24, [_hoisted_25])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Next question "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.next(undefined, 0);
     }),
     "class": ["px-6 py-3 inline-block font-semibold text-white bg-purple-600 rounded cursor-pointer disabled:opacity-75", $data.Question ? 'ml-auto' : 'mx-auto']
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question ? 'Next Question' : 'Start Quiz'), 3
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.Question ? $data.Question + 1 > $data.Questions.length ? 'Finish' : 'Next Question' : 'Start Quiz'), 3
   /* TEXT, CLASS */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
+  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, [!$data.Topics.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_28, " No Quizes ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
       href: "/exams/5/subjects/1/quizes/".concat(t.id),
       key: i,
       "class": "flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_progress_circle, {
       width: 50,
       stroke: 4,
-      color: "text-white",
-      percent: t.percent
+      text: false,
+      color: "text-white text-sm",
+      percent: t.progress
     }, null, 8
     /* PROPS */
     , ["percent"])], 8

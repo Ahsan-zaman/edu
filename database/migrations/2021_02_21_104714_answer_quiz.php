@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class QuestionQuiz extends Migration
+class AnswerQuiz extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class QuestionQuiz extends Migration
      */
     public function up()
     {
-        Schema::create('question_quiz', function (Blueprint $table) {
+        Schema::create('answer_quiz', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->dateTime('answered_at');
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('quiz_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('answer_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->boolean('correct')->nullable();
         });
     }
 

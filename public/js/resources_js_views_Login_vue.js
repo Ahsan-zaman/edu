@@ -47,7 +47,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       })["catch"](function (err) {
         if (err.response.status == 422) {
-          _this.$refs.signupform.setErrors(err.response.data.errors);
+          _this.$refs.form.setErrors(err.response.data.errors);
         }
 
         _this.bus.emit('toast', {

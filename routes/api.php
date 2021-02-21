@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
 use Illuminate\Http\Request;
@@ -26,8 +27,10 @@ Route::apiResources([
 ]);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/quiz/answer/{quiz}', [QuizController::class,'answer']);
     Route::apiResources([
         'exams' => ExamController::class,
-        'topics' => TopicController::class
+        'topics' => TopicController::class,
+        'quizes' => QuizController::class
     ]);
 });

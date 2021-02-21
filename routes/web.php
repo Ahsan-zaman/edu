@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuizController;
 use App\Models\Exam;
 use App\Models\Subject;
 use App\Models\Topic;
@@ -30,6 +31,7 @@ Route::get('/exams/{exam}/subjects/{subject}', function ($examId, $subjectId) {
 Route::get('/exams/{exam}/subjects/{subject}/topics/{topic}', function ($examId, $subjectId, $topicId) {
     return view('topic', ['subject' => $subjectId, 'exam' => $examId, 'topic' => Topic::whereId($topicId)->first()]);
 });
+Route::get('/quizes/random', [QuizController::class, 'random']);
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/login');

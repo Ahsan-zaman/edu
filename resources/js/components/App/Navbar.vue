@@ -118,7 +118,8 @@ export default {
     },
     methods:{
         logout(){
-            localStorage.setItem('auth','')
+            localStorage.removeItem('auth')
+            localStorage.removeItem('user')
             location.href = '/logout'
         }
     }

@@ -143,7 +143,7 @@ export default {
     })
     .catch(err => {
         if(err.response.status == 422){
-            this.$refs.signupform.setErrors(err.response.data.errors)
+            this.$refs.form.setErrors(err.response.data.errors)
         }
         this.bus.emit('toast',{
             title: 'Error',

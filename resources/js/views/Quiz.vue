@@ -2,7 +2,7 @@
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
 		<div class="md:col-span-2">
 			<div class="p-4 relative shadow">
-				<div v-if="Topics.length" class="text-2xl">
+				<div class="text-2xl">
 					{{QuizDetails.topic}}
 				</div>
                 <transition name="fade">
@@ -27,17 +27,7 @@
                             <div class="text-lg font-semibold">
                                 Before you start
                             </div>
-                            <ul class="list-disc list-inside">
-                                <li>
-                                    You must complete this assessment in one session — make sure your internet is reliable.
-                                </li>
-                                <li>
-                                    If you don’t earn a badge this time, you can retake this assessment once more.
-                                </li>
-                                <li>
-                                    We won’t show your results to anyone without your permission.
-                                </li>
-                            </ul>
+                            <div v-html="QuizDetails.desc"></div>
                         </div>
                     </div>
                 </transition>
@@ -65,13 +55,13 @@
 									v-for="(a, j) in q.answers"
 									:key="j"
 									@click="answer(a,i)"
-									:class="a === q.answer ? 'border-purple-600' : ''"
+									:class="a.id === q.answer ? 'border-purple-600' : ''"
 									class="flex items-center px-4 h-14 my-1 font-semibold bg-transparent text-purple-600 hover:text-white hover:bg-purple-600 rounded border hover:border-purple-600 cursor-pointer"
 								>
 									<div class="font-bold mr-4">{{ numbering[j] }}</div>
-									<div>{{ a }}</div>
+									<div>{{ a.answer }}</div>
 									<svg
-										v-if="a === q.answer"
+										v-if="a.id === q.answer"
 										class="ml-auto w-8 h-8"
 										fill="none"
 										viewBox="0 0 24 24"
@@ -101,28 +91,33 @@
 				<!-- Next question -->
 				<div class="flex space-x-4 py-4">
 					<button
-						@click="next"
+						@click="next(undefined,0)"
 						class="px-6 py-3 inline-block font-semibold text-white bg-purple-600 rounded cursor-pointer disabled:opacity-75"
                         :class="Question ? 'ml-auto' : 'mx-auto'"
 					>
-						{{Question ? 'Next Question' : 'Start Quiz'}}
+						{{Question ? Question+1 > Questions.length ? 'Finish' : 'Next Question' : 'Start Quiz'}}
 					</button>
 				</div>
 			</div>
 		</div>
-		<div class="md:col-span-1 md:h-screen overflow-y-auto md:sticky md:top-2">
+		<div class="md:col-span-1 md:max-h-screen overflow-y-auto md:sticky md:top-2">
+            <div class="w-full bg-gray-200 flex items-center justify-center text-gray-600 h-48 rounded" v-if="!Topics.length">
+                No Quizes
+            </div>
 			<a
+                v-else
                 :href="`/exams/5/subjects/1/quizes/${t.id}`"
 				v-for="(t, i) in Topics"
 				:key="i"
 				class="flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"
 			>
-				<div class="text-txl text-white mr-2">{{ t.name }}</div>
+				<div class="text-white mr-2">{{ t.name }}</div>
 				<progress-circle
 					:width="50"
 					:stroke="4"
-					color="text-white"
-					:percent="t.percent"
+                    :text="false"
+					color="text-white text-sm"
+					:percent="t.progress"
 				/>
 			</a>
 		</div>
@@ -150,11 +145,12 @@ export default {
 		};
 	},
     mounted(){
-        this.$http.get(`/subjects/${this.$route.params.subject}`)
+
+        this.$http.get(`/quizes/`)
         .then(res => {
             this.Topics = res.data
         })
-        this.$http.get(`/topics/${this.$route.params.id}`)
+        this.$http.get(`/quizes/${this.$route.params.id}`)
         .then(res => {
             this.QuizDetails = res.data[0]
             this.Questions = res.data[1]
@@ -162,41 +158,58 @@ export default {
         })
     },
 	methods: {
-		next() {
+		next(a,i) {
             if(!this.Question){
                 if(this.QuizDetails.time_limit){
                     window.setInterval(() => {
                         this.QuizDetails.time_limit -= 1
                     },1000)
                 }
-                window.addEventListener('beforeunload', function (e) {
-                    // Cancel the event
-                    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-                    // Chrome requires returnValue to be set
-                    e.returnValue = 'Why tho ?';
-                });
+                window.addEventListener('beforeunload', this.b4u);
+                this.Question += 1;
             }
-            if( (this.Question+1) <= this.Questions.length){
+            if( (this.Question) <= this.Questions.length && a){
+                
                 this.loading =true
-                setTimeout(() => {
+                this.$http.post(`/quiz/answer/${this.$route.params.id}`,{
+                    question_id: this.Questions[i].id,
+                    answer_id: a.id,
+                })
+                .then(res => {
+                    // console.log(res.data)
                     this.loading = false
-                },1000)
+                    this.Question += 1;
+                })
+                .catch(err => {
+                    this.bus.emit('toast',{
+                    title: 'Error',
+                    text: err.response.data.message,
+                    type:'error'
+                })
+                })
     
                 // Answering completed
-                this.Question += 1;
-            }else{
+            }
+            else if(  (this.Question+1) > this.Questions.length ){
+                window.removeEventListener('beforeunload', this.b4u );
+
+                this.$router.push('/quiz/my')
                 this.bus.emit('toast',{
                     title: 'Success',
-                    text: 'Quiz completed but not saved. Under development :D',
+                    text: 'Quiz completed & saved :D',
                     type:'success'
                 })
             }
 		},
         answer(a,i){
-            this.Questions[i].answer = a
+            this.Questions[i].answer = a.id
             // Make request to backeend to track answers 7 mark 
-            this.next()
+            this.next(a,i)
         },
+        b4u(e){
+            e.preventDefault();
+            e.returnValue = '';
+        }
 	},
     computed:{
         minutes(){
@@ -213,7 +226,7 @@ export default {
         },
     },
     beforeRouteLeave (to, from, next) {
-        if(this.Question) {
+        if(this.Question < this.Questions.length) {
             let r = confirm('Chnages you made may not be saved.')
             if(r){
                 next()

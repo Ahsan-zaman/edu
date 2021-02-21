@@ -37,7 +37,8 @@ axiosIns.interceptors.response.use(
         // if (status === 401) {
         if (response && response.status === 401) {
             // console.log(response)
-            localStorage.setItem("auth", false);
+            localStorage.removeItem("auth");
+            localStorage.removeItem("user");
 
             // Remove userData from localStorage
             // localStorage.removeItem("userData");

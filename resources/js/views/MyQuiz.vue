@@ -25,7 +25,7 @@
 				>
 					<div class="flex justify-center">
 						<ProgressCircle
-							color="text-purple-600"
+							color="text-purple-600 text-2xl"
 							:percent="q.progress"
 							:stroke="10"
 							:width="150"
@@ -210,11 +210,13 @@ export default {
 			],
 		};
 	},
-	events: {
-		nameOfCustomEventToCall() {
-			this.open = false;
-		},
-	},
+    mounted(){
+        this.$http.get('quizes')
+        .then(res => {
+            // console.log(res.data)
+            this.quizes = res.data
+        })
+    }
 };
 </script>
 

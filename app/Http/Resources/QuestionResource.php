@@ -18,7 +18,7 @@ class QuestionResource extends JsonResource
             'id' => $this->id,
             'question' => $this->question,
             'details' => $this->details,
-            'answers' => $this->answers()->inRandomOrder()->pluck('answer'),
+            'answers' => $this->answers()->inRandomOrder()->select('answers.id', 'answer')->get(),
             'answer' => '',
         ];
     }

@@ -184,7 +184,7 @@ class QuestionSeeder extends Seeder
                 'answers' => [
                     "Archiving",
                     "Repurposing",
-                    "Analysis",
+                    "Presentation",
                     "Data Management"
                 ],
                 'topic' => 1
@@ -241,6 +241,30 @@ class QuestionSeeder extends Seeder
                     "{'Title': 'Object Oriented Programming'}",
                     "{'Title': 'Object Oriented Programming', 'courseCode': 'M251', 'Credits': 8}",
                     "None of these"
+                ],
+                'topic' => 2
+            ],
+            [
+                'details' => '',
+                'q' => 'Structured data can only be captured and represented in web pages in a sequence of ______ ?',
+                'answer' => Str::slug("Markup"),
+                'answers' => [
+                    "Unicode characters",
+                    "ASCII format",
+                    "Markup",
+                    "All of them"
+                ],
+                'topic' => 2
+            ],
+            [
+                'details' => '',
+                'q' => 'Which type of representation shows how the data is actually represented on the physical machine?',
+                'answer' => Str::slug("None of them"),
+                'answers' => [
+                    "Logical representation",
+                    "Physical representation",
+                    "Binary representation",
+                    "None of them"
                 ],
                 'topic' => 2
             ],

@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="progress-ring relative text-2xl"
+    class="progress-ring relative"
     :class="color"
     :width="width"
     :height="width">
@@ -35,7 +35,7 @@ export default {
         width: Number,
         percent:  Number,
         stroke:  Number,
-        color: String
+        color: String,
     },
     computed:{
         radius(){

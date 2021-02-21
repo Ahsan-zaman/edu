@@ -124,10 +124,13 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  events: {
-    nameOfCustomEventToCall: function nameOfCustomEventToCall() {
-      this.open = false;
-    }
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$http.get('quizes').then(function (res) {
+      // console.log(res.data)
+      _this.quizes = res.data;
+    });
   }
 });
 
@@ -156,7 +159,7 @@ var _hoisted_1 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", {
-    "class": ["progress-ring relative text-2xl", $props.color],
+    "class": ["progress-ring relative", $props.color],
     width: $props.width,
     height: $props.width
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("g", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
@@ -337,7 +340,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: i,
       "class": "p-4 flex flex-col justify-around bg-gray-100 cursor-pointer hover:bg-white hover:shadow-xl"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ProgressCircle, {
-      color: "text-purple-600",
+      color: "text-purple-600 text-2xl",
       percent: q.progress,
       stroke: 10,
       width: 150
