@@ -15,7 +15,7 @@
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">
             <div class="text-center mb-20">
-                <h1 contentEditable="true" class="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
+                <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
                     {{$subject->name}}
                     <!-- {{Str::slug("XML")}} -->
                 </h1>
@@ -28,8 +28,8 @@
             </div>
 
             <div class="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2">
-                @foreach($subject->topics as $key => $topic)
-                <a href="{{ url('exams/' . $exam . '/subjects/' . $subject->id . '/topics/' . $topic->id ) }}"
+                @forelse($subject->topics as $key => $topic)
+                <a href="{{ url('exam/' . $exam . '/subjects/' . $subject->id . '/topics/' . $topic->id ) }}"
                     class="group p-2 sm:w-1/2 w-full">
                     <div class="group-hover:shadow-lg bg-gray-100 rounded flex p-4 h-full items-center">
                         <div class="flex flex-col items-center pr-4 font-mono text-6xl text-purple-600">
@@ -54,10 +54,14 @@
                         </div>
                     </div>
                 </a>
-                @endforeach
+                @empty
+                <h1 class="text-2xl font-medium title-font text-gray-400 text-center w-full mb-4">
+                    No topics were found for this subject :(
+                </h1>
+                @endforelse
             </div>
-            <button
-                class="flex mx-auto mt-16 text-white bg-purple-600 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">More</button>
+            <!-- <button
+                class="flex mx-auto mt-16 text-white bg-purple-600 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">More</button> -->
         </div>
     </section>
     @include('static.footer');

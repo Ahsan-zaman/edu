@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
@@ -33,4 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
         'topics' => TopicController::class,
         'quizes' => QuizController::class
     ]);
+
+
+    // Added Teacher only middleware later
+    Route::apiResource('question', QuestionController::class);
 });

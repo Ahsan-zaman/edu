@@ -106,7 +106,7 @@
             </div>
 			<a
                 v-else
-                :href="`/exams/5/subjects/1/quizes/${t.id}`"
+                :href="`/exam/5/subjects/1/quizes/${t.id}`"
 				v-for="(t, i) in Topics"
 				:key="i"
 				class="flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"

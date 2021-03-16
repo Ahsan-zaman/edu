@@ -12,9 +12,23 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->validate($request, [
+            'search' => ['nullable','string'],
+            'selected' => ['nullable']
+        ]);
+        if ($request->search) {
+            $questions = Question::where('question', 'LIKE', "%{$request->search}%")->limit(5);
+            if ($request->selected) {
+                $questions = $questions->whereNotIn('id', explode(',', $request->selected));
+            }
+            $questions = $questions->get(['question','id', 'difficulty']);
+        } else {
+            $questions = Question::limit(5)->get(['question','id', 'difficulty']);
+        }
+
+        return response($questions, 200);
     }
 
     /**

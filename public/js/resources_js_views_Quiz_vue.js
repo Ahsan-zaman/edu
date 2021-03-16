@@ -443,7 +443,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 1
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.Topics, function (t, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
-      href: "/exams/5/subjects/1/quizes/".concat(t.id),
+      href: "/exam/5/subjects/1/quizes/".concat(t.id),
       key: i,
       "class": "flex items-center justify-between border-b-2 border-white bg-purple-600 rounded p-2 mb-2"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.name), 1

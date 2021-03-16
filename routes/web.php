@@ -22,13 +22,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home', ['exams' => Exam::limit(9)->get()]);
 });
-Route::get('/exams/{id}', function ($examId) {
-    return view('exam', ['exam' => Exam::whereId($examId)->first()]);
+Route::view('/exams', 'exams', ['exams' => Exam::limit(5)->with('subjects')->withCount('subjects')->orderBy('subjects_count', 'desc')->get()]);
+Route::get('/exam/{id}', function ($examId) {
+    return view('exam', ['exam' => Exam::whereId($examId)->with('subjects')->first()]);
 });
-Route::get('/exams/{exam}/subjects/{subject}', function ($examId, $subjectId) {
+Route::get('/exam/{exam}/subjects/{subject}', function ($examId, $subjectId) {
     return view('subject', ['subject' => Subject::whereId($subjectId)->first(), 'exam' => $examId]);
 });
-Route::get('/exams/{exam}/subjects/{subject}/topics/{topic}', function ($examId, $subjectId, $topicId) {
+Route::get('/exam/{exam}/subjects/{subject}/topics/{topic}', function ($examId, $subjectId, $topicId) {
     return view('topic', ['subject' => $subjectId, 'exam' => $examId, 'topic' => Topic::whereId($topicId)->first()]);
 });
 Route::get('/quizes/random', [QuizController::class, 'random']);

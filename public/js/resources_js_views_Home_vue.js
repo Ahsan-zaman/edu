@@ -81,7 +81,7 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 }, "Best picked questions"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "my-3"
 }, " Take a quiz created by expert teachers from past question papers based on selected topic. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
-  href: "/exams/5/subjects/1",
+  href: "/exams",
   "class": "mx-auto text-white bg-purple-600 border-2 border-purple-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-purple-600 rounded"
 }, " GO ")], -1
 /* HOISTED */
@@ -150,7 +150,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 }, " Take random quizes based on topics and difficulty level you choose. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "flex flex-col md:flex-row justify-between w-full"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
-  href: "/exams/5",
+  href: "/exams/",
   "class": "mx-auto text-white bg-purple-600 border-2 border-purple-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-purple-600 rounded"
 }, "Go")])], -1
 /* HOISTED */

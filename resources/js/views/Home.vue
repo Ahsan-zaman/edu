@@ -30,7 +30,7 @@
 						Take a quiz created by expert teachers from past question papers based on selected topic.
 					</p>
 					<a
-                        href="/exams/5/subjects/1"
+                        href="/exams"
 						class="mx-auto text-white bg-purple-600 border-2 border-purple-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-purple-600 rounded"
 					>
 						GO
@@ -95,7 +95,7 @@
 					</p>
 					<div class="flex flex-col md:flex-row justify-between w-full">
 						<a
-							href="/exams/5"
+							href="/exams/"
 							class="mx-auto text-white bg-purple-600 border-2 border-purple-600 py-1 my-3 px-6 focus:outline-none hover:bg-transparent hover:text-purple-600 rounded"
 							>Go</a
 						>

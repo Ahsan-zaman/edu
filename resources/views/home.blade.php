@@ -80,7 +80,7 @@
             </div>
             <div class="grid grid-cols-3 gap-6">
                 @foreach ($exams as $exam)
-                <a href="{{ url('exams/'.$exam->id) }}"
+                <a href="{{ url('exam/'.$exam->id) }}"
                     class="flex items-center justify-center uppercase text-purple-600 bg-transparent rounded-full w-full px-10 h-12 mt-2 text-lg font-semibold text-center border border-purple-600 hover:text-gray-100 hover:bg-purple-600">
                     {{$exam->name}}
                 </a>

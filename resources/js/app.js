@@ -43,7 +43,7 @@ axiosIns.interceptors.response.use(
             // Remove userData from localStorage
             // localStorage.removeItem("userData");
 
-            window.location.replace('/login');
+            window.location.replace("/login");
         }
         return Promise.reject(error);
     }

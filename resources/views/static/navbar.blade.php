@@ -107,12 +107,12 @@
                     href="{{ url('/signup') }}">Join Now</a>
                 @endguest
                 @auth
-                <div class="flex flex-col items-center">
+                <a href="/app" class="flex flex-col items-center">
                     <img class="inline object-cover w-8 h-8 rounded-full hidden md:block"
                         src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                         alt="image" />
                     <span class="text-xs">{{ Auth::user()->name }}</span>
-                </div>
+                </a>
                 <a id="logout"
                     class="px-4 py-2 mt-2 text-sm font-semibold bg-purple-600 text-white md:mt-0 md:ml-4 hover:text-purple-600 hover:bg-transparent hover:bg-transparent rounded border hover:border-purple-600"
                     href="{{ url('/logout') }}">Log Out</a>
